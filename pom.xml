@@ -1,0 +1,390 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>io.renren</groupId>
+	<artifactId>renren-fastplus</artifactId>
+	<version>1.0.0</version>
+	<packaging>jar</packaging>
+	<description>renren-fastplus</description>
+
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>1.5.4.RELEASE</version>
+	</parent>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+		<java.version>1.8</java.version>
+		<mybatis.spring.boot.version>1.3.0</mybatis.spring.boot.version>
+		<mysql.version>5.1.38</mysql.version>
+		<druid.version>1.0.28</druid.version>
+		<quartz.version>2.3.0</quartz.version>
+		<commons.lang.version>2.6</commons.lang.version>
+		<commons.fileupload.version>1.3.1</commons.fileupload.version>
+		<commons.io.version>2.5</commons.io.version>
+		<commons.codec.version>1.10</commons.codec.version>
+		<commons.configuration.version>1.10</commons.configuration.version>
+		<shiro.version>1.3.2</shiro.version>
+		<kaptcha.version>0.0.9</kaptcha.version>
+		<qiniu.version>[7.2.0, 7.2.99]</qiniu.version>
+		<aliyun.oss.version>2.5.0</aliyun.oss.version>
+		<qcloud.cos.version>4.4</qcloud.cos.version>
+
+		<!-- dubbo properties -->
+		<dubbo_version>2.8.4a</dubbo_version>
+
+		<validation_version>1.1.0.Final</validation_version>
+		<javax.el-api_version>2.2.4</javax.el-api_version>
+		<javax.el_version>2.2.4</javax.el_version>
+		<jcache_version>0.4</jcache_version>
+		<javassist_version>3.15.0-GA</javassist_version>
+		<netty_version>3.9.9.Final</netty_version>
+		<mina_version>1.1.7</mina_version>
+		<grizzly_version>2.1.4</grizzly_version>
+		<httpclient_version>4.5.2</httpclient_version>
+		<bsf_version>3.1</bsf_version>
+		<zookeeper_version>3.4.6</zookeeper_version>
+		<zkclient_version>0.8</zkclient_version>
+		<xmemcached_version>1.3.6</xmemcached_version>
+		<cxf_version>3.1.5</cxf_version>
+		<curator_version>2.5.0</curator_version>
+		<thrift_version>0.8.0</thrift_version>
+		<hessian_lite_version>3.2.1-fixed-2</hessian_lite_version>
+		<hessian_version>4.0.7</hessian_version>
+		<jetty_version>6.1.26</jetty_version>
+		<tomcat_embed_version>8.0.11</tomcat_embed_version>
+		<kryo-serializers_version>0.37</kryo-serializers_version>
+		<fst_version>2.44</fst_version>
+		<xstream.version>1.4.7</xstream.version>
+		<fastjson.version>1.2.6</fastjson.version>
+
+
+
+		<!--wagon plugin 配置-->
+		<service-path>/work/renren</service-path>
+		<pack-name>${artifactId}-${version}.jar</pack-name>
+		<remote-addr>192.168.1.10</remote-addr>
+		<remote-username>root</remote-username>
+		<remote-passwd>123456</remote-passwd>
+	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>com.dxhy.basic</groupId>
+			<artifactId>SMS-api</artifactId>
+			<version>2.0.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-aop</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context-support</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-configuration-processor</artifactId>
+			<optional>true</optional>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-devtools</artifactId>
+			<optional>true</optional>
+		</dependency>
+		<dependency>
+			<groupId>org.mybatis.spring.boot</groupId>
+			<artifactId>mybatis-spring-boot-starter</artifactId>
+			<version>${mybatis.spring.boot.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<version>${mysql.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.alibaba</groupId>
+			<artifactId>druid</artifactId>
+			<version>${druid.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.quartz-scheduler</groupId>
+			<artifactId>quartz</artifactId>
+			<version>${quartz.version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>com.mchange</groupId>
+					<artifactId>c3p0</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>commons-lang</groupId>
+			<artifactId>commons-lang</artifactId>
+			<version>${commons.lang.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>commons-fileupload</groupId>
+			<artifactId>commons-fileupload</artifactId>
+			<version>${commons.fileupload.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+			<version>${commons.io.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>commons-codec</groupId>
+			<artifactId>commons-codec</artifactId>
+			<version>${commons.codec.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>commons-configuration</groupId>
+			<artifactId>commons-configuration</artifactId>
+			<version>${commons.configuration.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.shiro</groupId>
+			<artifactId>shiro-core</artifactId>
+			<version>${shiro.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.shiro</groupId>
+			<artifactId>shiro-spring</artifactId>
+			<version>${shiro.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.github.axet</groupId>
+			<artifactId>kaptcha</artifactId>
+			<version>${kaptcha.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.qiniu</groupId>
+			<artifactId>qiniu-java-sdk</artifactId>
+			<version>${qiniu.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.aliyun.oss</groupId>
+			<artifactId>aliyun-sdk-oss</artifactId>
+			<version>${aliyun.oss.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.qcloud</groupId>
+			<artifactId>cos_api</artifactId>
+			<version>${qcloud.cos.version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.slf4j</groupId>
+					<artifactId>slf4j-log4j12</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+
+
+		<!--Fastjson Json处理工具包-->
+		<dependency>
+			<groupId>com.alibaba</groupId>
+			<artifactId>fastjson</artifactId>
+			<version>1.1.37</version>
+		</dependency>
+		<dependency>
+			<groupId>org.javassist</groupId>
+			<artifactId>javassist</artifactId>
+			<version>${javassist_version}</version>
+		</dependency>
+
+		<!-- dubbo -->
+		<dependency>
+			<groupId>org.apache.zookeeper</groupId>
+			<artifactId>zookeeper</artifactId>
+			<version>3.4.6</version>
+		</dependency>
+
+		<!-- dubbo 依赖 -->
+		<dependency>
+			<groupId>com.alibaba</groupId>
+			<artifactId>dubbo</artifactId>
+			<version>${dubbo_version}</version>
+			<exclusions>
+			   <exclusion>
+				   <groupId>org.springframework</groupId>
+				   <artifactId>spring</artifactId>
+			   </exclusion>
+		   </exclusions>
+		</dependency>
+		<!-- pro begin -->
+		<dependency>
+			<groupId>com.101tec</groupId>
+			<artifactId>zkclient</artifactId>
+			<version>${zkclient_version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.slf4j</groupId>
+					<artifactId>slf4j-log4j12</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+
+		<!--  springboot整合 redis -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-redis</artifactId>
+			<version>1.4.7.RELEASE</version>
+		</dependency>
+
+	</dependencies>
+
+	<build>
+		<extensions>
+			<extension>
+				<groupId>org.apache.maven.wagon</groupId>
+				<artifactId>wagon-ssh</artifactId>
+				<version>2.8</version>
+			</extension>
+		</extensions>
+		<plugins>
+			<!--Tomcat7 -->
+			<plugin>
+				<groupId>org.apache.tomcat.maven</groupId>
+				<artifactId>tomcat7-maven-plugin</artifactId>
+				<configuration>
+					<port>8085</port>
+					<path>/</path>
+					<uriEncoding>UTF-8</uriEncoding>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+				<configuration>
+					<fork>true</fork>
+				</configuration>
+			</plugin>
+			<plugin>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>2.3.2</version>
+				<configuration>
+					<source>1.8</source>
+					<target>1.8</target>
+					<encoding>UTF-8</encoding>
+					<compilerArguments>
+						<extdirs>project-demo\lib</extdirs>
+					</compilerArguments>
+				</configuration>
+			</plugin>
+			<!--<plugin>-->
+				<!--<groupId>org.codehaus.mojo</groupId>-->
+				<!--<artifactId>wagon-maven-plugin</artifactId>-->
+				<!--<version>1.0</version>-->
+				<!--<configuration>-->
+					<!--<fromFile>target/${pack-name}</fromFile>-->
+					<!--<url><![CDATA[scp://${remote-username}:${remote-passwd}@${remote-addr}${service-path}]]></url>-->
+					<!--<commands>-->
+						<!--&lt;!&ndash; Kill Old Process &ndash;&gt;-->
+						<!--<command>pkill -f ${pack-name}</command>-->
+						<!--<command>rm -f ${service-path}/renren.log</command>-->
+						<!--&lt;!&ndash; Restart jar package，write result into renren.log &ndash;&gt;-->
+						<!--<command><![CDATA[nohup java -jar ${service-path}/${pack-name} > ${service-path}/renren.log 2>&1 & ]]></command>-->
+						<!--<command><![CDATA[netstat -nptl]]></command>-->
+						<!--<command><![CDATA[ps -ef | grep java | grep -v grep]]></command>-->
+					<!--</commands>-->
+					<!--&lt;!&ndash; 运行命令 mvn clean package wagon:upload-single wagon:sshexec&ndash;&gt;-->
+					<!--<displayCommandOutputs>true</displayCommandOutputs>-->
+				<!--</configuration>-->
+			<!--</plugin>-->
+		</plugins>
+	</build>
+
+	<!--<repositories>-->
+		<!--<repository>-->
+			<!--<id>public</id>-->
+			<!--<name>aliyun nexus</name>-->
+			<!--<url>http://maven.aliyun.com/nexus/content/groups/public/</url>-->
+			<!--<releases>-->
+				<!--<enabled>true</enabled>-->
+			<!--</releases>-->
+		<!--</repository>-->
+	<!--</repositories>-->
+	<!--<pluginRepositories>-->
+		<!--<pluginRepository>-->
+			<!--<id>public</id>-->
+			<!--<name>aliyun nexus</name>-->
+			<!--<url>http://maven.aliyun.com/nexus/content/groups/public/</url>-->
+			<!--<releases>-->
+				<!--<enabled>true</enabled>-->
+			<!--</releases>-->
+			<!--<snapshots>-->
+				<!--<enabled>false</enabled>-->
+			<!--</snapshots>-->
+		<!--</pluginRepository>-->
+	<!--</pluginRepositories>-->
+
+
+	<!-- 设定主仓库，按设定顺序进行查找。 -->
+	<repositories>
+		<repository>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+			<id>dxhy</id>
+			<name>dxhy Repository</name>
+			<url>http://10.1.20.6:8081/nexus/content/groups/public/</url>
+		</repository>
+	</repositories>
+
+	<!-- 设定插件仓库 -->
+	<pluginRepositories>
+		<pluginRepository>
+			<id>大象慧云maven资源库</id>
+			<name>大象慧云maven资源库</name>
+			<url>http://10.1.20.6:8081/nexus/content/groups/public/</url>
+		</pluginRepository>
+	</pluginRepositories>
+
+
+	<distributionManagement>
+		<repository>
+			<id>user-releases</id>
+			<url>http://10.1.20.6:8081/nexus/content/repositories/releases/</url>
+		</repository>
+		<snapshotRepository>
+			<id>user-snapshots</id>
+			<url>http://10.1.20.6:8081/nexus/content/repositories/snapshots/</url>
+		</snapshotRepository>
+	</distributionManagement>
+
+
+	<!--<profiles>-->
+		<!--<profile>-->
+			<!--<id>dev</id>-->
+			<!--<properties>-->
+				<!--<deployType>dev</deployType>-->
+			<!--</properties>-->
+		<!--</profile>-->
+		<!--<profile>-->
+			<!--<id>test</id>-->
+			<!--<properties>-->
+				<!--<deployType>test</deployType>-->
+			<!--</properties>-->
+		<!--</profile>-->
+		<!--<profile>-->
+			<!--<id>pre</id>-->
+			<!--<properties>-->
+				<!--<deployType>pre</deployType>-->
+			<!--</properties>-->
+		<!--</profile>-->
+	<!--</profiles>-->
+</project>

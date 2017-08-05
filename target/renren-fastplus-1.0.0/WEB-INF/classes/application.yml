@@ -1,0 +1,58 @@
+# Tomcat
+server:
+    tomcat:
+        uri-encoding: UTF-8
+        max-threads: 1000
+        min-spare-threads: 30
+    port: 9292
+    context-path: /tuoluo
+
+# mysql
+spring:
+    # 环境 dev|test|pro
+    profiles:
+        active: dev
+    datasource:
+        type: com.alibaba.druid.pool.DruidDataSource
+        driverClassName: com.mysql.jdbc.Driver
+    # jackson时间格式化
+    jackson:
+        time-zone: GMT+8
+        date-format: yyyy-MM-dd HH:mm:ss
+    http:
+        multipart:
+#          maxFileSize:50Mb
+#          maxRequestSize:100Mb
+#          enabled: true
+          max-file-size: 100MB
+          max-request-size: 100MB
+    # 指定静态资源的路径
+    resources:
+        static-locations: classpath:/static/,classpath:/views/
+
+    #redis 集成
+    redis:
+      host: 10.1.1.240
+      password: ele&dev
+      port: 6379
+      pool:
+        max-idle: 100
+        min-idle: 1
+        max-active: 1000
+        max-wait: -1
+
+# Mybatis配置
+mybatis:
+    mapperLocations: classpath:mapper/**/*.xml
+    configLocation: classpath:mybatis.xml
+my:
+    upload:
+        serverPath: 10.1.1.243:9292/oas/api/upload
+    wxUserInfo:
+      wdfp:
+        userInfoUrl: http://wdfp.5ifapiao.com/wxservice/api/getUserInfoWithOpenId
+      51fp:
+        userInfoUrl: http://wxqyh.51fapiao.cn/wxservice/api/getUserInfoWithOpenId
+#      accessToken: 31ym2__2c62DQwU3Hbo0QD_0uZQG7ETihAcPchXE_DUDqioFCldXxH-Y2ojOq-v2JEckIKOJLcacZt0eTeVCHSnNcI4YrseSscxb-fcUKdjxZDvY6yMdU5dYBUZAHofeWMKhAEAFVT
+      accessToken: F9aL3BVIG1b85azzZcKs7s_8BCl5n_nF3FR_gdwCKchosfKFTK85MdfkGc8Hg0a_R6t82pK_OntwnNYihrxwNwh-ywtU2m8rPNq6fFhQQadqcM_DJ_mmYTqFbX1ZPCbHZMNgABAUHI
+      #      userInfoUrl: http://wxqyh.51fapiao.cn/wxservice/api/getUserInfoWithOpenId

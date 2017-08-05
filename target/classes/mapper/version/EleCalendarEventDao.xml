@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="io.renren.modules.version.dao.EleCalendarEventDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="io.renren.modules.version.entity.EleCalendarEventEntity" id="eleCalendarEventMap">
+        <result property="id" column="id"/>
+        <result property="triggerTime" column="trigger_time"/>
+        <result property="createTime" column="create_time"/>
+        <result property="name" column="name"/>
+        <result property="info" column="info"/>
+        <result property="sort" column="sort"/>
+        <result property="remarks" column="remarks"/>
+    </resultMap>
+
+	<select id="queryObject" resultType="io.renren.modules.version.entity.EleCalendarEventEntity">
+		select * from ele_calendar_event where id = #{value}
+	</select>
+
+	<select id="queryList" resultType="io.renren.modules.version.entity.EleCalendarEventEntity">
+		select * from ele_calendar_event
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+			<otherwise>
+                order by id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="queryTotal" resultType="int">
+		select count(*) from ele_calendar_event 
+	</select>
+	 
+	<insert id="save" parameterType="io.renren.modules.version.entity.EleCalendarEventEntity" useGeneratedKeys="true" keyProperty="id">
+		insert into ele_calendar_event
+		(
+			`trigger_time`, 
+			`create_time`, 
+			`name`, 
+			`info`, 
+			`sort`, 
+			`remarks`
+		)
+		values
+		(
+			#{triggerTime}, 
+			#{createTime}, 
+			#{name}, 
+			#{info}, 
+			#{sort}, 
+			#{remarks}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="io.renren.modules.version.entity.EleCalendarEventEntity">
+		update ele_calendar_event 
+		<set>
+			<if test="triggerTime != null">`trigger_time` = #{triggerTime}, </if>
+			<if test="createTime != null">`create_time` = #{createTime}, </if>
+			<if test="name != null">`name` = #{name}, </if>
+			<if test="info != null">`info` = #{info}, </if>
+			<if test="sort != null">`sort` = #{sort}, </if>
+			<if test="remarks != null">`remarks` = #{remarks}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="delete">
+		delete from ele_calendar_event where id = #{value}
+	</delete>
+	
+	<delete id="deleteBatch">
+		delete from ele_calendar_event where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>

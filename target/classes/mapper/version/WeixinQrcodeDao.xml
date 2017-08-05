@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="io.renren.modules.version.dao.WeixinQrcodeDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="io.renren.modules.version.entity.WeixinQrcodeEntity" id="weixinQrcodeMap">
+        <result property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="actionName" column="action_name"/>
+        <result property="accountId" column="account_id"/>
+        <result property="imageHref" column="image_href"/>
+        <result property="createDate" column="create_date"/>
+        <result property="ticket" column="ticket"/>
+        <result property="expireSeconds" column="expire_seconds"/>
+        <result property="sceneId" column="scene_id"/>
+        <result property="generationTime" column="generation_time"/>
+        <result property="savePath" column="save_path"/>
+        <result property="qrcodeUrl" column="qrcode_url"/>
+        <result property="description" column="description"/>
+		<result property="groupName" column="group_name"/>
+    </resultMap>
+
+	<select id="queryObject" resultType="io.renren.modules.version.entity.WeixinQrcodeEntity">
+		select * from weixin_qrcode where id = #{value}
+	</select>
+
+	<select id="queryList" resultType="io.renren.modules.version.entity.WeixinQrcodeEntity">
+		select * from weixin_qrcode
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+			<otherwise>
+                order by id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+
+	<select id="getSceneidByAccountId" resultType="int">
+		select MAX(scene_id) from weixin_qrcode where account_id = #{accountId}
+	</select>
+
+	<select id="queryGroupName" resultType="String">
+		SELECT DISTINCT group_name FROM `weixin_qrcode` where group_name IS NOT NULL
+	</select>
+
+ 	<select id="queryTotal" resultType="int">
+		select count(*) from weixin_qrcode 
+	</select>
+	 
+	<insert id="save" parameterType="io.renren.modules.version.entity.WeixinQrcodeEntity">
+		insert into weixin_qrcode
+		(
+			`id`, 
+			`name`, 
+			`action_name`, 
+			`account_id`, 
+			`image_href`, 
+			`create_date`, 
+			`ticket`, 
+			`expire_seconds`, 
+			`scene_id`, 
+			`generation_time`, 
+			`save_path`, 
+			`qrcode_url`, 
+			`description`,
+			`group_name`
+		)
+		values
+		(
+			#{id}, 
+			#{name}, 
+			#{actionName}, 
+			#{accountId}, 
+			#{imageHref}, 
+			#{createDate}, 
+			#{ticket}, 
+			#{expireSeconds}, 
+			#{sceneId}, 
+			#{generationTime}, 
+			#{savePath}, 
+			#{qrcodeUrl}, 
+			#{description},
+			#{groupName}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="io.renren.modules.version.entity.WeixinQrcodeEntity">
+		update weixin_qrcode 
+		<set>
+			<if test="name != null">`name` = #{name}, </if>
+			<if test="actionName != null">`action_name` = #{actionName}, </if>
+			<if test="accountId != null">`account_id` = #{accountId}, </if>
+			<if test="imageHref != null">`image_href` = #{imageHref}, </if>
+			<if test="createDate != null">`create_date` = #{createDate}, </if>
+			<if test="ticket != null">`ticket` = #{ticket}, </if>
+			<if test="expireSeconds != null">`expire_seconds` = #{expireSeconds}, </if>
+			<if test="sceneId != null">`scene_id` = #{sceneId}, </if>
+			<if test="generationTime != null">`generation_time` = #{generationTime}, </if>
+			<if test="savePath != null">`save_path` = #{savePath}, </if>
+			<if test="qrcodeUrl != null">`qrcode_url` = #{qrcodeUrl}, </if>
+			<if test="description != null">`description` = #{description}</if>
+			<if test="groupName != null">`group_name` = #{groupName}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="delete">
+		delete from weixin_qrcode where id = #{value}
+	</delete>
+	
+	<delete id="deleteBatch">
+		delete from weixin_qrcode where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>

@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>版本管理</title>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+<link rel="stylesheet" href="../../css/bootstrap.min.css">
+<link rel="stylesheet" href="../../css/font-awesome.min.css">
+<link rel="stylesheet" href="../../plugins/jqgrid/ui.jqgrid-bootstrap.css">
+<link rel="stylesheet" href="../../plugins/ztree/css/metroStyle/metroStyle.css">
+<link rel="stylesheet" href="../../css/main.css">
+<script src="../../libs/jquery.min.js"></script>
+<script src="../../plugins/layer/layer.js"></script>
+<script src="../../libs/bootstrap.min.js"></script>
+<script src="../../libs/vue.min.js"></script>
+<script src="../../plugins/jqgrid/grid.locale-cn.js"></script>
+<script src="../../plugins/jqgrid/jquery.jqGrid.min.js"></script>
+<script src="../../plugins/ztree/jquery.ztree.all.min.js"></script>
+<script src="../../js/common.js"></script>
+<script src="../../libs/ajaxupload.js"></script>
+</head>
+<body>
+<div id="rrapp" v-cloak>
+	<div v-show="showList">
+		<div class="grid-btn">
+			<a v-if="hasPermission('eleversion:save')" class="btn btn-primary" @click="add"><i class="fa fa-plus"></i>&nbsp;新增</a>
+			<a v-if="hasPermission('eleversion:update')" class="btn btn-primary" @click="update"><i class="fa fa-pencil-square-o"></i>&nbsp;修改</a>
+			<a v-if="hasPermission('eleversion:delete')" class="btn btn-primary" @click="del"><i class="fa fa-trash-o"></i>&nbsp;删除</a>
+		</div>
+	    <table id="jqGrid"></table>
+	    <div id="jqGridPager"></div>
+    </div>
+    
+    <div v-show="!showList" class="panel panel-default">
+		<div class="panel-heading">{{title}}</div>
+		<form class="form-horizontal">
+											<div class="form-group">
+			   	<div class="col-sm-2 control-label">应用版本名称</div>
+			   	<div class="col-sm-10">
+			      <input type="text" class="form-control" v-model="eleVersion.versionName" placeholder="应用版本名称"/>
+			    </div>
+			</div>
+									<div class="form-group">
+			   	<div class="col-sm-2 control-label">版本号</div>
+			   	<div class="col-sm-10">
+			      <input type="text" class="form-control" v-model="eleVersion.versionNum" placeholder="版本号"/>
+			    </div>
+			</div>
+			<div class="form-group">
+				<div class="col-sm-2 control-label">apk上传</div>
+				<div class="col-sm-10">
+					<a class="btn btn-primary" id="upload"><i class="fa fa-plus"></i>&nbsp;上传文件</a>
+				</div>
+			</div>
+			<div class="form-group">
+			   	<div class="col-sm-2 control-label">上传路径(下载路径)</div>
+			   	<div class="col-sm-10">
+			      <input type="text"  class="form-control" id="path" v-model="eleVersion.path" placeholder="上传路径(下载路径)" disabled/>
+			    </div>
+			</div>
+			<!--有id说明为更改，则展示创建人-->
+			<div v-if="eleVersion.id" class="form-group">
+				<div class="col-sm-2 control-label">创建人</div>
+				<div class="col-sm-10">
+					<input type="text" readonly="readonly" class="form-control" v-model="eleVersion.createName" placeholder="创建人"/>
+				</div>
+			</div>
+			<!--<div class="form-group">-->
+			<!--<div class="col-sm-2 control-label">创建时间</div>-->
+			<!--<div class="col-sm-10">-->
+			<!--<input type="text" class="form-control" v-model="eleVersion.createDate" placeholder="创建时间"/>-->
+			<!--</div>-->
+			<!--</div>-->
+			<div class="form-group">
+				<div class="col-sm-2 control-label">状态</div>
+				<div class="col-sm-10">
+					<input type="radio" name="state" v-model="eleVersion.state" value="1"/>启动
+					<input type="radio" name="state" v-model="eleVersion.state" value="0"/>关闭
+					<!--<input type="text" class="form-control" v-model="eleVersion.state" placeholder="状态(0:禁用 1:启用)"/>-->
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="col-sm-2 control-label">是否强制更新</div>
+				<div class="col-sm-10">
+					<input type="radio" name="forceupdate" v-model="eleVersion.forceupdate" value="1"/>是
+					<input type="radio" name="forceupdate" v-model="eleVersion.forceupdate" value="0"/>否
+					<!--<input type="text" class="form-control" v-model="eleVersion.forceupdate" placeholder="强制更新(0:否 1:是)"/>-->
+				</div>
+			</div>
+			<div class="form-group">
+			   	<div class="col-sm-2 control-label">版本说明</div>
+			   	<div class="col-sm-10">
+				<textarea class="form-control" v-model="eleVersion.description" placeholder="更新说明"></textarea>
+			      <!--<input type="text" class="form-control" v-model="eleVersion.description" placeholder="更新说明"/>-->
+			    </div>
+			</div>
+			<div class="form-group">
+				<div class="col-sm-2 control-label"></div> 
+				<input type="button" class="btn btn-primary" @click="saveOrUpdate" value="确定"/>
+				&nbsp;&nbsp;<input type="button" class="btn btn-warning" @click="reload" value="返回"/>
+			</div>
+		</form>
+	</div>
+</div>
+
+<script src="../../js/modules/version/eleversion.js"></script>
+</body>
+</html>

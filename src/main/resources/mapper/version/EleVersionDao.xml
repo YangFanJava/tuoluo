@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="io.renren.modules.version.dao.EleVersionDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="io.renren.modules.version.entity.EleVersionEntity" id="eleVersionMap">
+        <result property="id" column="id"/>
+        <result property="versionName" column="version_name"/>
+        <result property="versionNum" column="version_num"/>
+        <result property="path" column="path"/>
+        <result property="description" column="description"/>
+        <result property="createName" column="create_name"/>
+        <result property="createDate" column="create_date"/>
+        <result property="state" column="state"/>
+        <result property="forceupdate" column="forceUpdate"/>
+    </resultMap>
+
+	<select id="queryObject" resultType="io.renren.modules.version.entity.EleVersionEntity">
+		select * from ele_version where id = #{value}
+	</select>
+
+	<select id="queryList" resultType="io.renren.modules.version.entity.EleVersionEntity">
+		select * from ele_version
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+			<otherwise>
+                order by id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="queryTotal" resultType="int">
+		select count(*) from ele_version 
+	</select>
+	 
+	<insert id="save" parameterType="io.renren.modules.version.entity.EleVersionEntity">
+		insert into ele_version
+		(
+			`id`, 
+			`version_name`, 
+			`version_num`, 
+			`path`, 
+			`description`, 
+			`create_name`, 
+			`create_date`, 
+			`state`, 
+			`forceUpdate`
+		)
+		values
+		(
+			#{id}, 
+			#{versionName}, 
+			#{versionNum}, 
+			#{path}, 
+			#{description}, 
+			#{createName}, 
+			#{createDate}, 
+			#{state}, 
+			#{forceupdate}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="io.renren.modules.version.entity.EleVersionEntity">
+		update ele_version 
+		<set>
+			<if test="versionName != null">`version_name` = #{versionName}, </if>
+			<if test="versionNum != null">`version_num` = #{versionNum}, </if>
+			<if test="path != null">`path` = #{path}, </if>
+			<if test="description != null">`description` = #{description}, </if>
+			<if test="createName != null">`create_name` = #{createName}, </if>
+			<if test="createDate != null">`create_date` = #{createDate}, </if>
+			<if test="state != null">`state` = #{state}, </if>
+			<if test="forceupdate != null">`forceUpdate` = #{forceupdate}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="delete">
+		delete from ele_version where id = #{value}
+	</delete>
+	
+	<delete id="deleteBatch">
+		delete from ele_version where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>

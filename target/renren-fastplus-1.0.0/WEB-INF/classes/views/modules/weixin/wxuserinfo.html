@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title></title>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+<link rel="stylesheet" href="../../css/bootstrap.min.css">
+<link rel="stylesheet" href="../../css/font-awesome.min.css">
+<link rel="stylesheet" href="../../plugins/jqgrid/ui.jqgrid-bootstrap.css">
+<link rel="stylesheet" href="../../plugins/ztree/css/metroStyle/metroStyle.css">
+<link rel="stylesheet" href="../../css/main.css">
+<script src="../../libs/jquery.min.js"></script>
+<script src="../../plugins/layer/layer.js"></script>
+<script src="../../libs/bootstrap.min.js"></script>
+<script src="../../libs/vue.min.js"></script>
+<script src="../../plugins/jqgrid/grid.locale-cn.js"></script>
+<script src="../../plugins/jqgrid/jquery.jqGrid.min.js"></script>
+<script src="../../plugins/ztree/jquery.ztree.all.min.js"></script>
+<script src="../../js/common.js"></script>
+</head>
+<body>
+<div id="rrapp" v-cloak>
+	<div v-show="showList">
+		<div class="grid-btn">
+			<a v-if="hasPermission('wxuserinfo:save')" class="btn btn-primary" @click="add"><i class="fa fa-plus"></i>&nbsp;新增</a>
+			<a v-if="hasPermission('wxuserinfo:update')" class="btn btn-primary" @click="update"><i class="fa fa-pencil-square-o"></i>&nbsp;修改</a>
+			<a v-if="hasPermission('wxuserinfo:delete')" class="btn btn-primary" @click="del"><i class="fa fa-trash-o"></i>&nbsp;删除</a>
+			<a v-if="hasPermission('wxuserinfo:save')" class="btn btn-primary" @click="selOpenId"><i class="fa fa-trash-o"></i>&nbsp;51发票selOpenId</a>
+			<a v-if="hasPermission('wxuserinfo:save')" class="btn btn-primary" @click="selInfo"><i class="fa fa-trash-o"></i>&nbsp;51发票selInfo</a>
+			<a v-if="hasPermission('wxuserinfo:save')" class="btn btn-primary" @click="selOpenId2"><i class="fa fa-trash-o"></i>&nbsp;我的发票selOpenId</a>
+			<a v-if="hasPermission('wxuserinfo:save')" class="btn btn-primary" @click="selInfo2"><i class="fa fa-trash-o"></i>&nbsp;我的发票selInfo</a>
+			<a v-if="hasPermission('wxuserinfo:save')" class="btn btn-primary" @click="test"><i class="fa fa-trash-o"></i>&nbsp;test</a>
+		</div>
+	    <table id="jqGrid"></table>
+	    <div id="jqGridPager"></div>
+    </div>
+    
+    <div v-show="!showList" class="panel panel-default">
+		<div class="panel-heading">{{title}}</div>
+		<form class="form-horizontal">
+											<div class="form-group">
+			   	<div class="col-sm-2 control-label">用户是否订阅该公众号标识，0表示未关注</div>
+			   	<div class="col-sm-10">
+			      <input type="text" class="form-control" v-model="wxUserinfo.subscribe" placeholder="用户是否订阅该公众号标识，0表示未关注"/>
+			    </div>
+			</div>
+									<div class="form-group">
+			   	<div class="col-sm-2 control-label">对当前公众号唯一ID</div>
+			   	<div class="col-sm-10">
+			      <input type="text" class="form-control" v-model="wxUserinfo.openid" placeholder="对当前公众号唯一ID"/>
+			    </div>
+			</div>
+									<div class="form-group">
+			   	<div class="col-sm-2 control-label">用户的昵称</div>
+			   	<div class="col-sm-10">
+			      <input type="text" class="form-control" v-model="wxUserinfo.nickname" placeholder="用户的昵称"/>
+			    </div>
+			</div>
+									<div class="form-group">
+			   	<div class="col-sm-2 control-label">用户的性别，1男、2女</div>
+			   	<div class="col-sm-10">
+			      <input type="text" class="form-control" v-model="wxUserinfo.sex" placeholder="用户的性别，1男、2女"/>
+			    </div>
+			</div>
+									<div class="form-group">
+			   	<div class="col-sm-2 control-label">用户所在城市</div>
+			   	<div class="col-sm-10">
+			      <input type="text" class="form-control" v-model="wxUserinfo.city" placeholder="用户所在城市"/>
+			    </div>
+			</div>
+									<div class="form-group">
+			   	<div class="col-sm-2 control-label">用户所在国家</div>
+			   	<div class="col-sm-10">
+			      <input type="text" class="form-control" v-model="wxUserinfo.country" placeholder="用户所在国家"/>
+			    </div>
+			</div>
+									<div class="form-group">
+			   	<div class="col-sm-2 control-label">用户所在省份</div>
+			   	<div class="col-sm-10">
+			      <input type="text" class="form-control" v-model="wxUserinfo.province" placeholder="用户所在省份"/>
+			    </div>
+			</div>
+									<div class="form-group">
+			   	<div class="col-sm-2 control-label">用户的语言</div>
+			   	<div class="col-sm-10">
+			      <input type="text" class="form-control" v-model="wxUserinfo.language" placeholder="用户的语言"/>
+			    </div>
+			</div>
+									<div class="form-group">
+			   	<div class="col-sm-2 control-label">用户头像地址</div>
+			   	<div class="col-sm-10">
+			      <input type="text" class="form-control" v-model="wxUserinfo.headimgurl" placeholder="用户头像地址"/>
+			    </div>
+			</div>
+									<div class="form-group">
+			   	<div class="col-sm-2 control-label">用户关注时间</div>
+			   	<div class="col-sm-10">
+			      <input type="text" class="form-control" v-model="wxUserinfo.subscribeTime" placeholder="用户关注时间"/>
+			    </div>
+			</div>
+									<div class="form-group">
+			   	<div class="col-sm-2 control-label">用户唯一ID</div>
+			   	<div class="col-sm-10">
+			      <input type="text" class="form-control" v-model="wxUserinfo.unionid" placeholder="用户唯一ID"/>
+			    </div>
+			</div>
+									<div class="form-group">
+			   	<div class="col-sm-2 control-label">用户管理界面对粉丝添加备注</div>
+			   	<div class="col-sm-10">
+			      <input type="text" class="form-control" v-model="wxUserinfo.remark" placeholder="用户管理界面对粉丝添加备注"/>
+			    </div>
+			</div>
+									<div class="form-group">
+			   	<div class="col-sm-2 control-label">用户所在的分组ID</div>
+			   	<div class="col-sm-10">
+			      <input type="text" class="form-control" v-model="wxUserinfo.groupid" placeholder="用户所在的分组ID"/>
+			    </div>
+			</div>
+									<div class="form-group">
+			   	<div class="col-sm-2 control-label">用户被打上的标签ID列表</div>
+			   	<div class="col-sm-10">
+			      <input type="text" class="form-control" v-model="wxUserinfo.tagidList" placeholder="用户被打上的标签ID列表"/>
+			    </div>
+			</div>
+									<div class="form-group">
+			   	<div class="col-sm-2 control-label">公众号原始ID</div>
+			   	<div class="col-sm-10">
+			      <input type="text" class="form-control" v-model="wxUserinfo.accountId" placeholder="公众号原始ID"/>
+			    </div>
+			</div>
+									<div class="form-group">
+			   	<div class="col-sm-2 control-label">数据是否是完整的</div>
+			   	<div class="col-sm-10">
+			      <input type="text" class="form-control" v-model="wxUserinfo.isWhole" placeholder="数据是否是完整的"/>
+			    </div>
+			</div>
+							<div class="form-group">
+				<div class="col-sm-2 control-label"></div> 
+				<input type="button" class="btn btn-primary" @click="saveOrUpdate" value="确定"/>
+				&nbsp;&nbsp;<input type="button" class="btn btn-warning" @click="reload" value="返回"/>
+			</div>
+		</form>
+	</div>
+</div>
+
+<script src="../../js/modules/weixin/wxuserinfo.js"></script>
+</body>
+</html>

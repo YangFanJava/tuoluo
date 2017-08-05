@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="io.renren.modules.weixin.dao.WxUserinfoDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="io.renren.modules.weixin.entity.WxUserinfoEntity" id="wxUserinfoMap">
+        <result property="id" column="id"/>
+        <result property="subscribe" column="subscribe"/>
+        <result property="openid" column="openid"/>
+        <result property="nickname" column="nickname"/>
+        <result property="sex" column="sex"/>
+        <result property="city" column="city"/>
+        <result property="country" column="country"/>
+        <result property="province" column="province"/>
+        <result property="language" column="language"/>
+        <result property="headimgurl" column="headimgurl"/>
+        <result property="subscribeTime" column="subscribe_time"/>
+        <result property="unionid" column="unionid"/>
+        <result property="remark" column="remark"/>
+        <result property="groupid" column="groupid"/>
+        <result property="tagidList" column="tagid_list"/>
+        <result property="accountId" column="account_id"/>
+        <result property="isWhole" column="is_whole"/>
+    </resultMap>
+
+	<select id="queryObject" resultType="io.renren.modules.weixin.entity.WxUserinfoEntity">
+		select * from wx_userinfo where id = #{value}
+	</select>
+
+	<select id="queryList" resultType="io.renren.modules.weixin.entity.WxUserinfoEntity">
+		select * from wx_userinfo
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+			<otherwise>
+                order by id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="queryTotal" resultType="int">
+		select count(*) from wx_userinfo 
+	</select>
+	 
+	<insert id="save" parameterType="io.renren.modules.weixin.entity.WxUserinfoEntity" useGeneratedKeys="true" keyProperty="id">
+		insert into wx_userinfo
+		(
+			`subscribe`, 
+			`openid`, 
+			`nickname`, 
+			`sex`, 
+			`city`, 
+			`country`, 
+			`province`, 
+			`language`, 
+			`headimgurl`, 
+			`subscribe_time`, 
+			`unionid`, 
+			`remark`, 
+			`groupid`, 
+			`tagid_list`, 
+			`account_id`, 
+			`is_whole`
+		)
+		values
+		(
+			#{subscribe}, 
+			#{openid}, 
+			#{nickname}, 
+			#{sex}, 
+			#{city}, 
+			#{country}, 
+			#{province}, 
+			#{language}, 
+			#{headimgurl}, 
+			#{subscribeTime}, 
+			#{unionid}, 
+			#{remark}, 
+			#{groupid}, 
+			#{tagidList}, 
+			#{accountId}, 
+			#{isWhole}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="io.renren.modules.weixin.entity.WxUserinfoEntity">
+		update wx_userinfo 
+		<set>
+			<if test="subscribe != null">`subscribe` = #{subscribe}, </if>
+			<if test="openid != null">`openid` = #{openid}, </if>
+			<if test="nickname != null">`nickname` = #{nickname}, </if>
+			<if test="sex != null">`sex` = #{sex}, </if>
+			<if test="city != null">`city` = #{city}, </if>
+			<if test="country != null">`country` = #{country}, </if>
+			<if test="province != null">`province` = #{province}, </if>
+			<if test="language != null">`language` = #{language}, </if>
+			<if test="headimgurl != null">`headimgurl` = #{headimgurl}, </if>
+			<if test="subscribeTime != null">`subscribe_time` = #{subscribeTime}, </if>
+			<if test="unionid != null">`unionid` = #{unionid}, </if>
+			<if test="remark != null">`remark` = #{remark}, </if>
+			<if test="groupid != null">`groupid` = #{groupid}, </if>
+			<if test="tagidList != null">`tagid_list` = #{tagidList}, </if>
+			<if test="accountId != null">`account_id` = #{accountId}, </if>
+			<if test="isWhole != null">`is_whole` = #{isWhole}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="delete">
+		delete from wx_userinfo where id = #{value}
+	</delete>
+	
+	<delete id="deleteBatch">
+		delete from wx_userinfo where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+
+
+
+	<insert id="saveOpenidObj" parameterType="java.lang.String" >
+		insert into wx_userinfo
+		(
+		`openid`,
+		`is_whole`,
+		`account_id`
+
+		)
+		values
+		(
+		#{openid},
+		0,
+		#{accound_id}
+		)
+	</insert>
+
+
+
+	<select id="queryNoWholeIDS" resultType="io.renren.modules.weixin.entity.WxUserinfoEntity">
+		select * from wx_userinfo WHERE is_whole = 0 AND  account_id = #{account_id} limit 0, #{pageSize}
+	</select>
+
+
+	<select id="queryLastInsertId" resultType="java.util.HashMap">
+		select openid,DATE_FORMAT(insert_time,'%Y-%m-%d %H:%i:%s') from wx_userinfo WHERE	account_id = #{account_id}   ORDER BY insert_time DESC limit 0,1
+	</select>
+
+
+
+
+</mapper>
